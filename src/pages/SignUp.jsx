@@ -74,7 +74,6 @@ function SignUp() {
 					password,
 				})
 				toast.success(response.data.message)
-				console.log(response.data.message)
 				setTimeout(() => (window.location.href = '/signin'), 5000)
 			} catch (error) {
 				console.error(error)

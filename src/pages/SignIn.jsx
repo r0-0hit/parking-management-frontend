@@ -57,11 +57,9 @@ function SignIn() {
 					email,
 					password,
 				})
-				console.log(response.data)
 				setUser(response.data.data)
 				setRole(response.data.role)
 				setToken(response.data.token)
-				console.log(response.data)
 
 				response.data.token != null
 					? (window.location.href = '/dashboard')

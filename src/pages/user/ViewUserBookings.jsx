@@ -34,37 +34,37 @@ function ViewBookings() {
 	const [selectedSpot, setSelectedSpot] = useState(null)
 	const { token } = useAuthStore()
 
-	// const fetchBookings = async () => {
-	// 	try {
-	// 		const response = await axios.get(
-	// 			'http://localhost:5000/api/user/bookings/my-bookings',
-	// 			{
-	// 				headers: {
-	// 					Authorization: `Bearer ${token}`, // Add the Authorization header
-	// 				},
-	// 			}
-	// 		)
+	const fetchBookings = async () => {
+		try {
+			const response = await axios.get(
+				'http://localhost:5000/api/user/bookings/my-bookings',
+				{
+					headers: {
+						Authorization: `Bearer ${token}`, // Add the Authorization header
+					},
+				}
+			)
 
-	// 		const allBookings = response.data
+			const allBookings = response.data
 
-	// 		// Separate bookings into upcoming and past
-	// 		const currentDate = new Date()
+			// Separate bookings into upcoming and past
+			const currentDate = new Date()
 
-	// 		const upcoming = allBookings.filter(booking =>
-	// 			dayjs(booking.booking_date).isAfter(currentDate)
-	// 		)
-	// 		const past = allBookings.filter(booking =>
-	// 			dayjs(booking.booking_date).isBefore(currentDate)
-	// 		)
+			const upcoming = allBookings.filter(booking =>
+				dayjs(booking.booking_date).isAfter(currentDate)
+			)
+			const past = allBookings.filter(booking =>
+				dayjs(booking.booking_date).isBefore(currentDate)
+			)
 
-	// 		setUpcomingBookings(upcoming)
-	// 		setPastBookings(past)
-	// 	} catch (error) {
-	// 		isSessionExpire(error)
-	// 		console.error('Error fetching bookings:', error.response.data.message)
-	// 		toast.error('There was an error fetching your bookings.')
-	// 	}
-	// }
+			setUpcomingBookings(upcoming)
+			setPastBookings(past)
+		} catch (error) {
+			isSessionExpire(error)
+			console.error('Error fetching bookings:', error.response.data.message)
+			toast.error('There was an error fetching your bookings.')
+		}
+	}
 
 	const handelRating = async () => {
 		try {
@@ -92,38 +92,38 @@ function ViewBookings() {
 	}
 
 	useEffect(() => {
-		const fetchBookings = async () => {
-			try {
-				const response = await axios.get(
-					'http://localhost:5000/api/user/bookings/my-bookings',
-					{
-						headers: {
-							Authorization: `Bearer ${token}`, // Add the Authorization header
-						},
-					}
-				)
+		// const fetchBookings = async () => {
+		// 	try {
+		// 		const response = await axios.get(
+		// 			'http://localhost:5000/api/user/bookings/my-bookings',
+		// 			{
+		// 				headers: {
+		// 					Authorization: `Bearer ${token}`, // Add the Authorization header
+		// 				},
+		// 			}
+		// 		)
 
-				const allBookings = response.data
+		// 		const allBookings = response.data
 
-				// Separate bookings into upcoming and past
-				const currentDate = new Date()
+		// 		// Separate bookings into upcoming and past
+		// 		const currentDate = new Date()
 
-				const upcoming = allBookings.filter(booking =>
-					dayjs(booking.booking_date).isAfter(currentDate)
-				)
-				const past = allBookings.filter(booking =>
-					dayjs(booking.booking_date).isBefore(currentDate)
-				)
+		// 		const upcoming = allBookings.filter(booking =>
+		// 			dayjs(booking.booking_date).isAfter(currentDate)
+		// 		)
+		// 		const past = allBookings.filter(booking =>
+		// 			dayjs(booking.booking_date).isBefore(currentDate)
+		// 		)
 
-				setUpcomingBookings(upcoming)
-				setPastBookings(past)
-			} catch (error) {
-				isSessionExpire(error)
-				console.error('Error fetching bookings:', error.response.data.message)
-				error.response.data.message != 'Invalid Token' &&
-					toast.error('There was an error fetching your bookings.')
-			}
-		}
+		// 		setUpcomingBookings(upcoming)
+		// 		setPastBookings(past)
+		// 	} catch (error) {
+		// 		isSessionExpire(error)
+		// 		console.error('Error fetching bookings:', error.response.data.message)
+		// 		error.response.data.message != 'Invalid Token' &&
+		// 			toast.error('There was an error fetching your bookings.')
+		// 	}
+		// }
 		fetchBookings()
 	}, [])
 

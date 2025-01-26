@@ -37,7 +37,7 @@ function NavBar() {
 	const { user, logout, token, role, isDarkMode, setIsDarkMode } = useAuthStore()
 	const [expanded, setExpanded] = React.useState(false)
 	const [deleteUserName, setDeleteUserName] = React.useState('')
-	console.log(window.location.pathname)
+
 	const handleExpandClick = () => {
 		setExpanded(!expanded)
 	}
@@ -106,26 +106,32 @@ function NavBar() {
 					toast.error('You have Parking Spots!! \n Cannot Delete Account')
 					return
 				}
-
-				const response = await axios.delete('http://localhost:5000/api/managers/delete', {
-					data: {
-						id: user._id,
-					},
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				})
-				isSessionExpire(response)
-				toast.success(response.data.message)
-				handleDeleteClose()
-				logout()
-				setTimeout(() => {
-					window.location.href = '/signup'
-				}, 1000)
 			} catch (error) {
 				isSessionExpire(error)
-				console.error(error.response?.data?.message)
-				toast.error(error.response?.data?.message)
+
+				try {
+					const response = await axios.delete(
+						'http://localhost:5000/api/managers/delete',
+						{
+							data: {
+								id: user._id,
+							},
+							headers: {
+								Authorization: `Bearer ${token}`,
+							},
+						}
+					)
+					toast.success(response.data.message)
+					handleDeleteClose()
+					logout()
+					setTimeout(() => {
+						window.location.href = '/signup'
+					}, 1000)
+				} catch (error) {
+					isSessionExpire(error)
+					console.error(error)
+					toast.error(error.response?.data?.message)
+				}
 			}
 		} else {
 			try {
@@ -137,7 +143,6 @@ function NavBar() {
 						},
 					}
 				)
-				isSessionExpire(fetchResponse)
 				const allBookings = fetchResponse.data
 
 				// Separate bookings into upcoming and past
@@ -160,14 +165,14 @@ function NavBar() {
 						Authorization: `Bearer ${token}`,
 					},
 				})
-				isSessionExpire(response)
 				toast.success(response.data.message)
 				handleDeleteClose()
 				setTimeout(() => {
 					window.location.href = '/signup'
 				}, 1000)
 			} catch (error) {
-				console.error(error.response?.data?.message)
+				isSessionExpire(error)
+				console.error(error)
 				toast.error(error.response?.data?.message)
 			}
 		}
@@ -258,59 +263,64 @@ function NavBar() {
 					{!(
 						window.location.pathname === '/signup' ||
 						window.location.pathname === '/signin'
-					) && (
-						<Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-							<IconButton
-								size='large'
-								aria-label='account of current user'
-								aria-controls='menu-appbar'
-								aria-haspopup='true'
-								onClick={handleOpenNavMenu}
-								color='inherit'
-							>
-								<MenuIcon />
-							</IconButton>
-							<Menu
-								id='menu-appbar'
-								anchorEl={anchorElNav}
-								anchorOrigin={{
-									vertical: 'bottom',
-									horizontal: 'left',
-								}}
-								keepMounted
-								transformOrigin={{
-									vertical: 'top',
-									horizontal: 'left',
-								}}
-								open={Boolean(anchorElNav)}
-								onClose={handleCloseNavMenu}
-								sx={{ display: { xs: 'block', md: 'none' } }}
-							>
-								{/* {pages.map(page => (
+					) &&
+						role === 'user' && (
+							<Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+								<IconButton
+									size='large'
+									aria-label='account of current user'
+									aria-controls='menu-appbar'
+									aria-haspopup='true'
+									onClick={handleOpenNavMenu}
+									color='inherit'
+								>
+									<MenuIcon />
+								</IconButton>
+								<Menu
+									id='menu-appbar'
+									anchorEl={anchorElNav}
+									anchorOrigin={{
+										vertical: 'bottom',
+										horizontal: 'left',
+									}}
+									keepMounted
+									transformOrigin={{
+										vertical: 'top',
+										horizontal: 'left',
+									}}
+									open={Boolean(anchorElNav)}
+									onClose={handleCloseNavMenu}
+									sx={{ display: { xs: 'block', md: 'none' } }}
+								>
+									{/* {pages.map(page => (
 								<MenuItem key={page} onClick={handleCloseNavMenu}>
 									<Typography sx={{ textAlign: 'center' }}>{page}</Typography>
 								</MenuItem>
 							))} */}
 
-								<MenuItem onClick={handleCloseNavMenu}>
-									<Typography
-										sx={{ textAlign: 'center' }}
-										onClick={() => (window.location.href = '/searchParking')}
-									>
-										Search Spot
-									</Typography>
-								</MenuItem>
-								<MenuItem onClick={handleCloseNavMenu}>
-									<Typography
-										sx={{ textAlign: 'center' }}
-										onClick={() => (window.location.href = '/viewUserBookings')}
-									>
-										View Bookings
-									</Typography>
-								</MenuItem>
-							</Menu>
-						</Box>
-					)}
+									<MenuItem onClick={handleCloseNavMenu}>
+										<Typography
+											sx={{ textAlign: 'center' }}
+											onClick={() =>
+												(window.location.href = '/searchParking')
+											}
+										>
+											Search Spot
+										</Typography>
+									</MenuItem>
+									<MenuItem onClick={handleCloseNavMenu}>
+										<Typography
+											sx={{ textAlign: 'center' }}
+											onClick={() =>
+												(window.location.href = '/viewUserBookings')
+											}
+										>
+											View Bookings
+										</Typography>
+									</MenuItem>
+								</Menu>
+							</Box>
+						)}
 					<AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
 					<Typography
 						variant='h5'
@@ -334,24 +344,25 @@ function NavBar() {
 						{!(
 							window.location.pathname === '/signup' ||
 							window.location.pathname === '/signin'
-						) && (
-							<>
-								<Button
-									href='/searchParking'
-									onClick={handleCloseNavMenu}
-									sx={{ my: 2, color: 'white', display: 'block' }}
-								>
-									Search Spot
-								</Button>
-								<Button
-									href='/viewUserBookings'
-									onClick={handleCloseNavMenu}
-									sx={{ my: 2, color: 'white', display: 'block' }}
-								>
-									View Bookings
-								</Button>
-							</>
-						)}
+						) &&
+							role === 'user' && (
+								<>
+									<Button
+										href='/searchParking'
+										onClick={handleCloseNavMenu}
+										sx={{ my: 2, color: 'white', display: 'block' }}
+									>
+										Search Spot
+									</Button>
+									<Button
+										href='/viewUserBookings'
+										onClick={handleCloseNavMenu}
+										sx={{ my: 2, color: 'white', display: 'block' }}
+									>
+										View Bookings
+									</Button>
+								</>
+							)}
 					</Box>
 					<Box sx={{ flexGrow: 0 }}>
 						<IconButton
