@@ -37,7 +37,7 @@ function ViewBookings() {
 	const fetchBookings = async () => {
 		try {
 			const response = await axios.get(
-				'http://localhost:5000/api/user/bookings/my-bookings',
+				'https://parking-management-backend-epnm.onrender.com/api/user/bookings/my-bookings',
 				{
 					headers: {
 						Authorization: `Bearer ${token}`, // Add the Authorization header
@@ -69,7 +69,7 @@ function ViewBookings() {
 	const handelRating = async () => {
 		try {
 			const response = await axios.put(
-				'http://localhost:5000/api/user/bookings',
+				'https://parking-management-backend-epnm.onrender.com/api/user/bookings',
 				{
 					id: selectedSpot,
 					rating,
@@ -140,7 +140,7 @@ function ViewBookings() {
 	const handelBookingCancle = async () => {
 		console.log(selectedCancelSpot)
 		try {
-			const response = await axios.delete('http://localhost:5000/api/user/bookings/delete', {
+			const response = await axios.delete('https://parking-management-backend-epnm.onrender.com/api/user/bookings/delete', {
 				data: { id: selectedCancelSpot._id },
 				headers: {
 					Authorization: `Bearer ${token}`,

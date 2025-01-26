@@ -94,7 +94,7 @@ function NavBar() {
 		if (role === 'manager') {
 			try {
 				const fetchSpots = await axios.get(
-					'http://localhost:5000/api/manager/parking-spots/my-spots',
+					'https://parking-management-backend-epnm.onrender.com/api/manager/parking-spots/my-spots',
 					{
 						headers: {
 							Authorization: `Bearer ${token}`, // Add the Authorization header
@@ -112,7 +112,7 @@ function NavBar() {
 
 				try {
 					const response = await axios.delete(
-						'http://localhost:5000/api/managers/delete',
+						'https://parking-management-backend-epnm.onrender.com/api/managers/delete',
 						{
 							data: {
 								id: user._id,
@@ -137,7 +137,7 @@ function NavBar() {
 		} else {
 			try {
 				const fetchResponse = await axios.get(
-					'http://localhost:5000/api/user/bookings/my-bookings',
+					'https://parking-management-backend-epnm.onrender.com/api/user/bookings/my-bookings',
 					{
 						headers: {
 							Authorization: `Bearer ${token}`, // Add the Authorization header
@@ -158,7 +158,7 @@ function NavBar() {
 					return
 				}
 
-				const response = await axios.delete('http://localhost:5000/api/users/delete', {
+				const response = await axios.delete('https://parking-management-backend-epnm.onrender.com/api/users/delete', {
 					data: {
 						id: user._id,
 					},

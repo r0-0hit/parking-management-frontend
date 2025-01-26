@@ -31,7 +31,7 @@ const ViewBookings = () => {
 
 	const fetchData = async () => {
 		try {
-			const response = await axios.get('http://localhost:5000/api/manager/bookings', {
+			const response = await axios.get('https://parking-management-backend-epnm.onrender.com/api/manager/bookings', {
 				headers: {
 					Authorization: `Bearer ${token}`, // Add the Authorization header
 				},
@@ -75,7 +75,7 @@ const ViewBookings = () => {
 	const confirmBooking = async bookingStatus => {
 		try {
 			const response = await axios.put(
-				'http://localhost:5000/api/user/bookings/updateStatus',
+				'https://parking-management-backend-epnm.onrender.com/api/user/bookings/updateStatus',
 				{
 					id: selectedBooking._id,
 					status: bookingStatus,

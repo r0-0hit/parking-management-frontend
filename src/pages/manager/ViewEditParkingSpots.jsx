@@ -28,7 +28,7 @@ const ViewEditParkingSpots = () => {
 	const fetchData = async () => {
 		try {
 			const response = await axios.get(
-				'http://localhost:5000/api/manager/parking-spots/my-spots',
+				'https://parking-management-backend-epnm.onrender.com/api/manager/parking-spots/my-spots',
 				{
 					headers: {
 						Authorization: `Bearer ${token}`, // Add the Authorization header
@@ -79,7 +79,7 @@ const ViewEditParkingSpots = () => {
 
 		try {
 			const response = await axios.put(
-				'http://localhost:5000/api/manager/bookings',
+				'https://parking-management-backend-epnm.onrender.com/api/manager/bookings',
 				{
 					...selectedSpot,
 				},
@@ -102,7 +102,7 @@ const ViewEditParkingSpots = () => {
 
 	const handleRemoveClick = async spot => {
 		try {
-			const allBookings = await axios.get('http://localhost:5000/api/manager/bookings', {
+			const allBookings = await axios.get('https://parking-management-backend-epnm.onrender.com/api/manager/bookings', {
 				headers: {
 					Authorization: `Bearer ${token}`, // Add the Authorization header
 				},
@@ -122,7 +122,7 @@ const ViewEditParkingSpots = () => {
 		}
 		setParkingSpots(prevSpots => prevSpots.filter(prevSpot => prevSpot._id !== spot._id))
 		try {
-			const response = await axios.delete('http://localhost:5000/api/manager/bookings', {
+			const response = await axios.delete('https://parking-management-backend-epnm.onrender.com/api/manager/bookings', {
 				data: { _id: spot._id },
 				headers: {
 					Authorization: `Bearer ${token}`, // Add the Authorization header
