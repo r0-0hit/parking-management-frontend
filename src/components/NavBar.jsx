@@ -20,7 +20,7 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined'
-import { Collapse, Divider, Stack, styled, TextField } from '@mui/material'
+import { Collapse, Stack, TextField } from '@mui/material'
 import ExpandLess from '@mui/icons-material/ExpandLess'
 import ExpandMore from '@mui/icons-material/ExpandMore'
 import { toast } from 'react-toastify'
@@ -28,6 +28,7 @@ import axios from 'axios'
 import isSessionExpire from '../utils/session'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
+// import Svg from '../utils/Svg'
 
 function NavBar() {
 	const [anchorElNav, setAnchorElNav] = React.useState(null)
@@ -241,7 +242,8 @@ function NavBar() {
 			</Dialog>
 			<Container maxWidth='xl'>
 				<Toolbar disableGutters>
-					<AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 2, ml: 4 }} />
+					{/* <Svg sx={{ display: { xs: 'none', md: 'flex' }, mr: 2, ml: 4 }} /> */}
+					{/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 2, ml: 4 }} /> */}
 					<Typography
 						variant='h6'
 						noWrap
@@ -255,6 +257,7 @@ function NavBar() {
 							letterSpacing: '.3rem',
 							color: 'inherit',
 							textDecoration: 'none',
+							ml: 6,
 						}}
 					>
 						PARKNOW
@@ -321,7 +324,8 @@ function NavBar() {
 								</Menu>
 							</Box>
 						)}
-					<AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+					{/* <Svg /> */}
+					{/* <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} /> */}
 					<Typography
 						variant='h5'
 						noWrap
@@ -336,9 +340,10 @@ function NavBar() {
 							letterSpacing: '.3rem',
 							color: 'inherit',
 							textDecoration: 'none',
+							ml: 6,
 						}}
 					>
-						ParkNow
+						PARKNOW
 					</Typography>
 					<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
 						{!(
