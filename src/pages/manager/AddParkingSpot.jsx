@@ -37,7 +37,7 @@ const AddParkingSpot = () => {
 
 		try {
 			const response = await axios.post(
-				'http://localhost:5000/api/manager/parking-spots',
+				'https://parking-management-backend-epnm.onrender.com/api/manager/parking-spots',
 				{
 					name: slotName,
 					location,

@@ -85,7 +85,7 @@ function SearchParking() {
 		setLoading(true)
 
 		try {
-			const response = await axios.get('http://localhost:5000/api/available-spots', {
+			const response = await axios.get('https://parking-management-backend-epnm.onrender.com/api/available-spots', {
 				headers: {
 					Authorization: `Bearer ${token}`, // Add the Authorization header
 				},
@@ -137,7 +137,7 @@ function SearchParking() {
 	const handelPaymentDone = async () => {
 		try {
 			const response = await axios.post(
-				'http://localhost:5000/api/user/bookings',
+				'https://parking-management-backend-epnm.onrender.com/api/user/bookings',
 				{
 					parking_spot_id: bookingSlot._id,
 					booking_date: parsedDate,
