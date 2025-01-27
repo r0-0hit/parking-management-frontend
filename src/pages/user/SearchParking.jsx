@@ -77,7 +77,7 @@ function SearchParking() {
 			return
 		}
 
-		if (dayjs(start).isBefore(new Date()) || dayjs(end).isBefore(dayjs(start))) {
+		if (dayjs(start).isBefore(dayjs()) || dayjs(end).isBefore(dayjs(start))) {
 			toast.error('Please fill all fields correctly!')
 			return
 		}
@@ -85,13 +85,16 @@ function SearchParking() {
 		setLoading(true)
 
 		try {
-			const response = await axios.get('https://parking-management-backend-epnm.onrender.com/api/available-spots', {
-				headers: {
-					Authorization: `Bearer ${token}`, // Add the Authorization header
-				},
+			const response = await axios.get(
+				'https://parking-management-backend-epnm.onrender.com/api/available-spots',
+				{
+					headers: {
+						Authorization: `Bearer ${token}`, // Add the Authorization header
+					},
 
-				params: { location, date, start, end, lat: userLat, lng: userLng },
-			})
+					params: { location, date, start, end, lat: userLat, lng: userLng },
+				}
+			)
 
 			setParkingSlots(response.data)
 			setLoading(false)

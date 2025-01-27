@@ -48,13 +48,13 @@ function ViewBookings() {
 			const allBookings = response.data
 
 			// Separate bookings into upcoming and past
-			const currentDate = new Date()
+			const currentDate = dayjs()
 
 			const upcoming = allBookings.filter(booking =>
-				dayjs(booking.booking_date).isAfter(currentDate)
+				dayjs(booking.start_time).isAfter(currentDate)
 			)
 			const past = allBookings.filter(booking =>
-				dayjs(booking.booking_date).isBefore(currentDate)
+				dayjs(booking.start_time).isBefore(currentDate)
 			)
 
 			setUpcomingBookings(upcoming)
@@ -140,12 +140,15 @@ function ViewBookings() {
 	const handelBookingCancle = async () => {
 		console.log(selectedCancelSpot)
 		try {
-			const response = await axios.delete('https://parking-management-backend-epnm.onrender.com/api/user/bookings/delete', {
-				data: { id: selectedCancelSpot._id },
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			})
+			const response = await axios.delete(
+				'https://parking-management-backend-epnm.onrender.com/api/user/bookings/delete',
+				{
+					data: { id: selectedCancelSpot._id },
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
+			)
 
 			toast.success(response.data.message)
 			handelCloseCancelDilog()
