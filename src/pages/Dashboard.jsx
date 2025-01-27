@@ -1,25 +1,54 @@
+// import NavBar from '../components/NavBar'
+// import useAuthStore from '../utils/useAuthStore'
+// import ManagerDashboard from './manager/ManagerDashboard'
+// import UserDashboard from './user/UserDashboard'
+// import SearchParking from './user/SearchParking'
+
+// const Dashboard = () => {
+// 	const { role } = useAuthStore()
+// 	// const role = 'user'
+
+// 	return (
+// 		<>
+// 			{role === 'manager' ? (
+// 				<div>
+// 					<NavBar />
+// 					<ManagerDashboard />
+// 				</div>
+// 			) : (
+// 				<SearchParking />
+// 			)}
+// 		</>
+// 	)
+// }
+
+// export default Dashboard
+
+
+
 import NavBar from '../components/NavBar'
 import useAuthStore from '../utils/useAuthStore'
 import ManagerDashboard from './manager/ManagerDashboard'
 import UserDashboard from './user/UserDashboard'
 import SearchParking from './user/SearchParking'
+import AdminDashboard from './AdminDashboard' // Import the AdminDashboard component
 
 const Dashboard = () => {
-	const { role } = useAuthStore()
-	// const role = 'user'
+	const { role } = useAuthStore() // Get the role from the auth store
 
 	return (
 		<>
-			{role === 'manager' ? (
-				<div>
-					<NavBar />
-					<ManagerDashboard />
-				</div>
+			<NavBar /> {/* Common NavBar for all roles */}
+			{role === 'admin' ? (
+				<AdminDashboard /> // Show AdminDashboard for admin role
+			) : role === 'manager' ? (
+				<ManagerDashboard /> // Show ManagerDashboard for manager role
 			) : (
-				<SearchParking />
+				<SearchParking /> // Show SearchParking for user or other roles
 			)}
 		</>
 	)
 }
 
 export default Dashboard
+
