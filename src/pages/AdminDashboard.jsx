@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Box, Typography, Card, CardContent, Button, List, ListItem } from '@mui/material';
+import useAuthStore from '../utils/useAuthStore';
 
 const AdminPage = () => {
     const [managers, setManagers] = useState([]);
+    const {token} = useAuthStore();
 
     useEffect(() => {
         fetchManagers();
@@ -11,8 +13,13 @@ const AdminPage = () => {
 
     const fetchManagers = async () => {
         try {
-            const response = await axios.get('/api/managers');
+            const response = await axios.get('https://parking-management-backend-epnm.onrender.com/api/managers',{
+                headers: {
+						Authorization: `Bearer ${token}`, // Add the Authorization header
+					},
+            });
             setManagers(response.data);
+            console.log(response.data)
         } catch (error) {
             console.error('Error fetching managers:', error);
         }
@@ -20,7 +27,11 @@ const AdminPage = () => {
 
     const handleRemoveManager = async (id) => {
         try {
-            await axios.delete(`/api/managers/${id}`);
+            await axios.delete(`https://parking-management-backend-epnm.onrender.com/api/managers/${id}`,{
+                 headers: {
+						Authorization: `Bearer ${token}`, // Add the Authorization header
+					},
+            });
             fetchManagers(); // Refresh the list after deletion
         } catch (error) {
             console.error('Error removing manager:', error);
