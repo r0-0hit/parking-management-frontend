@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
@@ -17,6 +17,11 @@ import {
 	Rating,
 	Alert,
 	AlertTitle,
+	List,
+	ListItem,
+	ListItemButton,
+	ListItemText,
+	Autocomplete,
 } from '@mui/material'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -51,6 +56,9 @@ function SearchParking() {
 	const [userLng, setUserLng] = useState(null)
 	const [userLat, setUserLat] = useState(null)
 
+	const [suggestions, setSuggestions] = useState([])
+	const apiKey = 'pk.81c17574e9b4540a63b11fc0e59a5d98'
+
 	const { token, user } = useAuthStore()
 
 	const imgStyle = {
@@ -82,6 +90,7 @@ function SearchParking() {
 			return
 		}
 
+		setParkingSlots([])
 		setLoading(true)
 
 		try {
@@ -184,6 +193,41 @@ function SearchParking() {
 		setDisLocation(prev => !prev)
 		!disLocation ? setLocation('Your Current Location') : setLocation('')
 	}
+
+	const fetchSuggestions = async query => {
+		try {
+			const response = await axios.get('https://api.locationiq.com/v1/autocomplete.php', {
+				params: {
+					key: apiKey,
+					q: query,
+					limit: 4, // Return 5 suggestions
+					format: 'json',
+					normalizecity: 1,
+					countrycodes: 'in',
+				},
+			})
+			setSuggestions(response.data || [])
+		} catch (error) {
+			console.error('Error fetching location suggestions:', error)
+		}
+	}
+
+	const handleSuggestionClick = address => {
+		setLocation(address) // Set the selected address as the input value
+		setSuggestions([]) // Clear the suggestions
+	}
+
+	useEffect(() => {
+		if (location.length > 2 && location !== 'Your Current Location') {
+			const timeout = setTimeout(() => {
+				fetchSuggestions(location)
+			}, 1000) // Wait for 1 second before making the request
+
+			return () => clearTimeout(timeout) // Clear timeout on cleanup or new keystroke
+		} else {
+			setSuggestions([]) // Clear suggestions for short inputs
+		}
+	}, [location])
 
 	return (
 		<>
@@ -304,19 +348,55 @@ function SearchParking() {
 							<Grid container spacing={2} sx={{ marginBottom: 3 }}>
 								<Grid item xs={12}>
 									<Stack direction={'row'} spacing={2}>
-										<TextField
+										{/* <TextField
 											margin='normal'
 											required
 											fullWidth
 											id='location'
 											label='Location'
 											name='location'
-											autoComplete='location'
+											// autoComplete='location'
 											autoFocus
 											value={location}
 											onChange={e => setLocation(e.target.value)}
 											disabled={disLocation}
+										/> */}
+
+										<Autocomplete
+											fullWidth
+											freeSolo
+											disabled={disLocation}
+											options={suggestions.map(s => s.display_name)} // Map suggestions to display names
+											loading={loading}
+											inputValue={location}
+											onInputChange={(event, newValue) => {
+												setLocation(newValue) // Update the location state as the user types
+											}}
+											renderInput={params => (
+												<TextField
+													{...params}
+													disabled={disLocation}
+													label='Enter Location'
+													placeholder='Type a city or address...'
+													fullWidth
+													InputProps={{
+														...params.InputProps,
+														endAdornment: (
+															<>
+																{loading ? (
+																	<CircularProgress
+																		color='inherit'
+																		size={20}
+																	/>
+																) : null}
+																{params.InputProps.endAdornment}
+															</>
+														),
+													}}
+												/>
+											)}
 										/>
+
 										<Button
 											variant='outlined'
 											color='primary'
@@ -326,6 +406,27 @@ function SearchParking() {
 											Near Me
 										</Button>
 									</Stack>
+									{/* {suggestions.length > 0 && (
+										<List
+											sx={{ border: '1px solid #ccc', borderRadius: '4px' }}
+										>
+											{suggestions.map(suggestion => (
+												<ListItem key={suggestion.place_id} disablePadding>
+													<ListItemButton
+														onClick={() =>
+															handleSuggestionClick(
+																suggestion.display_name
+															)
+														}
+													>
+														<ListItemText
+															primary={suggestion.display_name}
+														/>
+													</ListItemButton>
+												</ListItem>
+											))}
+										</List>
+									)} */}
 								</Grid>
 								<Grid item xs={12}>
 									<DatePicker
